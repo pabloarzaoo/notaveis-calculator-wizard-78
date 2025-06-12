@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Calculator, Plus, Minus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,7 +19,7 @@ const Index = () => {
       formula: "(a+b)² = a² + 2ab + b²",
       description: "Expande o quadrado de uma soma",
       icon: <Plus className="h-6 w-6" />,
-      color: "from-blue-500 to-cyan-500"
+      color: "from-purple-500 to-purple-600"
     },
     {
       id: "quadrado-diferenca",
@@ -28,7 +27,7 @@ const Index = () => {
       formula: "(a-b)² = a² - 2ab + b²",
       description: "Expande o quadrado de uma diferença",
       icon: <Minus className="h-6 w-6" />,
-      color: "from-purple-500 to-pink-500"
+      color: "from-purple-600 to-purple-700"
     },
     {
       id: "produto-soma-diferenca",
@@ -36,7 +35,7 @@ const Index = () => {
       formula: "(a+b)(a-b) = a² - b²",
       description: "Produto de soma por diferença",
       icon: <X className="h-6 w-6" />,
-      color: "from-green-500 to-emerald-500"
+      color: "from-purple-400 to-purple-500"
     }
   ];
 
@@ -82,17 +81,17 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-background via-purple-50 to-purple-100">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center mb-4">
-            <Calculator className="h-12 w-12 text-cyan-400 mr-4" />
-            <h1 className="text-5xl font-bold text-white">
+            <Calculator className="h-12 w-12 text-primary mr-4" />
+            <h1 className="text-5xl font-bold text-foreground">
               Produtos Notáveis
             </h1>
           </div>
-          <p className="text-xl text-slate-300 max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Calcule e visualize os principais produtos notáveis da álgebra
           </p>
         </div>
@@ -102,26 +101,26 @@ const Index = () => {
           {products.map((product) => (
             <Card 
               key={product.id}
-              className="relative overflow-hidden bg-slate-800 border-slate-700 hover:border-slate-600 transition-all duration-300 hover:scale-105 cursor-pointer group"
+              className="relative overflow-hidden bg-card border-border hover:border-primary/50 transition-all duration-300 hover:scale-105 cursor-pointer group shadow-lg"
               onClick={() => setSelectedProduct(product.id)}
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${product.color} opacity-10 group-hover:opacity-20 transition-opacity`} />
+              <div className={`absolute inset-0 bg-gradient-to-br ${product.color} opacity-5 group-hover:opacity-10 transition-opacity`} />
               <CardHeader className="relative">
                 <div className="flex items-center space-x-3 mb-3">
-                  <div className={`p-3 rounded-lg bg-gradient-to-br ${product.color}`}>
+                  <div className={`p-3 rounded-lg bg-gradient-to-br ${product.color} text-white`}>
                     {product.icon}
                   </div>
-                  <CardTitle className="text-white text-xl">
+                  <CardTitle className="text-foreground text-xl">
                     {product.title}
                   </CardTitle>
                 </div>
-                <CardDescription className="text-slate-400">
+                <CardDescription className="text-muted-foreground">
                   {product.description}
                 </CardDescription>
               </CardHeader>
               <CardContent className="relative">
-                <div className="bg-slate-900 p-4 rounded-lg border border-slate-700">
-                  <code className="text-cyan-300 text-lg font-mono">
+                <div className="bg-muted p-4 rounded-lg border border-border">
+                  <code className="text-primary text-lg font-mono font-medium">
                     {product.formula}
                   </code>
                 </div>
@@ -141,17 +140,17 @@ const Index = () => {
 
         {/* Calculator Modal */}
         <Dialog open={!!selectedProduct} onOpenChange={closeModal}>
-          <DialogContent className="bg-slate-800 border-slate-700 text-white max-w-md">
+          <DialogContent className="bg-card border-border text-foreground max-w-md">
             <DialogHeader>
-              <DialogTitle className="text-2xl font-bold text-center">
+              <DialogTitle className="text-2xl font-bold text-center text-primary">
                 {products.find(p => p.id === selectedProduct)?.title}
               </DialogTitle>
             </DialogHeader>
             
             <div className="space-y-6">
               {/* Formula Display */}
-              <div className="bg-slate-900 p-4 rounded-lg border border-slate-700 text-center">
-                <code className="text-cyan-300 text-lg font-mono">
+              <div className="bg-muted p-4 rounded-lg border border-border text-center">
+                <code className="text-primary text-lg font-mono font-medium">
                   {products.find(p => p.id === selectedProduct)?.formula}
                 </code>
               </div>
@@ -159,7 +158,7 @@ const Index = () => {
               {/* Input Fields */}
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="valueA" className="text-slate-300">
+                  <Label htmlFor="valueA" className="text-foreground">
                     Escolha o valor de a:
                   </Label>
                   <Input
@@ -168,12 +167,12 @@ const Index = () => {
                     value={valueA}
                     onChange={(e) => setValueA(e.target.value)}
                     placeholder="Digite o valor de a"
-                    className="bg-slate-700 border-slate-600 text-white mt-2"
+                    className="bg-background border-border text-foreground mt-2"
                   />
                 </div>
                 
                 <div>
-                  <Label htmlFor="valueB" className="text-slate-300">
+                  <Label htmlFor="valueB" className="text-foreground">
                     Escolha o valor de b:
                   </Label>
                   <Input
@@ -182,7 +181,7 @@ const Index = () => {
                     value={valueB}
                     onChange={(e) => setValueB(e.target.value)}
                     placeholder="Digite o valor de b"
-                    className="bg-slate-700 border-slate-600 text-white mt-2"
+                    className="bg-background border-border text-foreground mt-2"
                   />
                 </div>
               </div>
@@ -190,7 +189,7 @@ const Index = () => {
               {/* Calculate Button */}
               <Button 
                 onClick={calculateResult}
-                className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:opacity-90 text-white font-semibold py-3"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3"
                 disabled={!valueA || !valueB}
               >
                 <Calculator className="h-5 w-5 mr-2" />
@@ -199,9 +198,9 @@ const Index = () => {
 
               {/* Result Display */}
               {result && (
-                <div className="bg-slate-900 p-4 rounded-lg border border-slate-700">
-                  <h3 className="text-lg font-semibold text-green-400 mb-2">Resultado:</h3>
-                  <p className="text-white font-mono text-sm leading-relaxed break-all">
+                <div className="bg-muted p-4 rounded-lg border border-border">
+                  <h3 className="text-lg font-semibold text-primary mb-2">Resultado:</h3>
+                  <p className="text-foreground font-mono text-sm leading-relaxed break-all">
                     {result}
                   </p>
                 </div>
@@ -211,7 +210,7 @@ const Index = () => {
               <Button 
                 onClick={resetCalculation}
                 variant="outline"
-                className="w-full border-slate-600 text-slate-300 hover:bg-slate-700"
+                className="w-full border-border text-muted-foreground hover:bg-muted"
               >
                 Limpar
               </Button>
