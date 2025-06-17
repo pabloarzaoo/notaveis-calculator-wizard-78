@@ -1,10 +1,13 @@
+
 import { useState } from "react";
-import { Calculator, Plus, Minus, X } from "lucide-react";
+import { Calculator, Plus, Minus, X, Function } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import SymbolicInput from "@/components/SymbolicInput";
 
 const Index = () => {
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
@@ -92,53 +95,74 @@ const Index = () => {
             </h1>
           </div>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Calcule e visualize os principais produtos notáveis da álgebra
+            Calcule e visualize os principais produtos notáveis da álgebra com valores numéricos ou expressões simbólicas
           </p>
         </div>
 
-        {/* Product Cards */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {products.map((product) => (
-            <Card 
-              key={product.id}
-              className="relative overflow-hidden bg-card border-border hover:border-primary/50 transition-all duration-300 hover:scale-105 cursor-pointer group shadow-lg"
-              onClick={() => setSelectedProduct(product.id)}
-            >
-              <div className={`absolute inset-0 bg-gradient-to-br ${product.color} opacity-5 group-hover:opacity-10 transition-opacity`} />
-              <CardHeader className="relative">
-                <div className="flex items-center space-x-3 mb-3">
-                  <div className={`p-3 rounded-lg bg-gradient-to-br ${product.color} text-white`}>
-                    {product.icon}
-                  </div>
-                  <CardTitle className="text-foreground text-xl">
-                    {product.title}
-                  </CardTitle>
-                </div>
-                <CardDescription className="text-muted-foreground">
-                  {product.description}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="relative">
-                <div className="bg-muted p-4 rounded-lg border border-border">
-                  <code className="text-primary text-lg font-mono font-medium">
-                    {product.formula}
-                  </code>
-                </div>
-                <Button 
-                  className={`w-full mt-4 bg-gradient-to-r ${product.color} hover:opacity-90 text-white font-semibold`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedProduct(product.id);
-                  }}
-                >
-                  Calcular
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        {/* Tabs para diferentes modos */}
+        <Tabs defaultValue="numeric" className="max-w-6xl mx-auto">
+          <TabsList className="grid w-full grid-cols-2 mb-8">
+            <TabsTrigger value="numeric" className="flex items-center space-x-2">
+              <Calculator className="h-4 w-4" />
+              <span>Calculadora Numérica</span>
+            </TabsTrigger>
+            <TabsTrigger value="symbolic" className="flex items-center space-x-2">
+              <Function className="h-4 w-4" />
+              <span>Calculadora Simbólica</span>
+            </TabsTrigger>
+          </TabsList>
 
-        {/* Calculator Modal */}
+          {/* Calculadora Numérica */}
+          <TabsContent value="numeric">
+            <div className="grid md:grid-cols-3 gap-8">
+              {products.map((product) => (
+                <Card 
+                  key={product.id}
+                  className="relative overflow-hidden bg-card border-border hover:border-primary/50 transition-all duration-300 hover:scale-105 cursor-pointer group shadow-lg"
+                  onClick={() => setSelectedProduct(product.id)}
+                >
+                  <div className={`absolute inset-0 bg-gradient-to-br ${product.color} opacity-5 group-hover:opacity-10 transition-opacity`} />
+                  <CardHeader className="relative">
+                    <div className="flex items-center space-x-3 mb-3">
+                      <div className={`p-3 rounded-lg bg-gradient-to-br ${product.color} text-white`}>
+                        {product.icon}
+                      </div>
+                      <CardTitle className="text-foreground text-xl">
+                        {product.title}
+                      </CardTitle>
+                    </div>
+                    <CardDescription className="text-muted-foreground">
+                      {product.description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="relative">
+                    <div className="bg-muted p-4 rounded-lg border border-border">
+                      <code className="text-primary text-lg font-mono font-medium">
+                        {product.formula}
+                      </code>
+                    </div>
+                    <Button 
+                      className={`w-full mt-4 bg-gradient-to-r ${product.color} hover:opacity-90 text-white font-semibold`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedProduct(product.id);
+                      }}
+                    >
+                      Calcular
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          {/* Calculadora Simbólica */}
+          <TabsContent value="symbolic">
+            <SymbolicInput />
+          </TabsContent>
+        </Tabs>
+
+        {/* Calculator Modal - apenas para modo numérico */}
         <Dialog open={!!selectedProduct} onOpenChange={closeModal}>
           <DialogContent className="bg-card border-border text-foreground max-w-md">
             <DialogHeader>
