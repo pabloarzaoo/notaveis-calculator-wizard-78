@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { Calculator, Plus, Minus, X, Function } from "lucide-react";
+import { Calculator, Plus, Minus, X, FunctionSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -107,7 +106,7 @@ const Index = () => {
               <span>Calculadora Numérica</span>
             </TabsTrigger>
             <TabsTrigger value="symbolic" className="flex items-center space-x-2">
-              <Function className="h-4 w-4" />
+              <FunctionSquare className="h-4 w-4" />
               <span>Calculadora Simbólica</span>
             </TabsTrigger>
           </TabsList>
