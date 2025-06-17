@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Calculator, Plus, Minus, X, FunctionSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -22,8 +21,7 @@ const Index = () => {
       formula: "(a+b)² = a² + 2ab + b²",
       description: "Expande o quadrado de uma soma",
       icon: <Plus className="h-6 w-6" />,
-      color: "from-purple-500 to-purple-600",
-      examples: ["(x+3)²", "(2x+5)²", "(a+7)²"]
+      color: "from-purple-500 to-purple-600"
     },
     {
       id: "quadrado-diferenca",
@@ -31,8 +29,7 @@ const Index = () => {
       formula: "(a-b)² = a² - 2ab + b²",
       description: "Expande o quadrado de uma diferença",
       icon: <Minus className="h-6 w-6" />,
-      color: "from-purple-600 to-purple-700",
-      examples: ["(x-3)²", "(xy-8)²", "(2a-b)²"]
+      color: "from-purple-600 to-purple-700"
     },
     {
       id: "produto-soma-diferenca",
@@ -40,8 +37,7 @@ const Index = () => {
       formula: "(a+b)(a-b) = a² - b²",
       description: "Produto de soma por diferença",
       icon: <X className="h-6 w-6" />,
-      color: "from-purple-400 to-purple-500",
-      examples: ["(x+y)(x-y)", "(a+3)(a-3)", "(2x+5)(2x-5)"]
+      color: "from-purple-400 to-purple-500"
     }
   ];
 
@@ -138,30 +134,14 @@ const Index = () => {
                       {product.description}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="relative space-y-4">
+                  <CardContent className="relative">
                     <div className="bg-muted p-4 rounded-lg border border-border">
                       <code className="text-primary text-lg font-mono font-medium">
                         {product.formula}
                       </code>
                     </div>
-                    
-                    {/* Exemplos integrados */}
-                    <div className="space-y-2">
-                      <p className="text-sm font-medium text-muted-foreground">Exemplos:</p>
-                      <div className="flex flex-wrap gap-2">
-                        {product.examples.map((example, index) => (
-                          <span
-                            key={index}
-                            className="inline-block bg-secondary text-secondary-foreground px-2 py-1 rounded text-sm font-mono"
-                          >
-                            {example}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                    
                     <Button 
-                      className={`w-full bg-gradient-to-r ${product.color} hover:opacity-90 text-white font-semibold`}
+                      className={`w-full mt-4 bg-gradient-to-r ${product.color} hover:opacity-90 text-white font-semibold`}
                       onClick={(e) => {
                         e.stopPropagation();
                         setSelectedProduct(product.id);
