@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Calculator, Plus, Minus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,43 +9,65 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 const Index = () => {
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
-  const [valueA, setValueA] = useState<string>("");
-  const [valueB, setValueB] = useState<string>("");
+  const [valueX, setValueX] = useState<string>("");
+  const [valueY, setValueY] = useState<string>("");
   const [result, setResult] = useState<string>("");
 
   const products = [
     {
-      id: "quadrado-soma",
-      title: "Quadrado da Soma",
-      formula: "(a+b)² = a² + 2ab + b²",
-      description: "Expande o quadrado de uma soma",
+      id: "x-quadrado-mais-constante",
+      title: "x² + constante",
+      formula: "x² + c",
+      description: "Calcula x² mais uma constante",
+      example: "x² + 5",
       icon: <Plus className="h-6 w-6" />,
-      color: "from-purple-500 to-purple-600"
+      color: "from-purple-500 to-purple-600",
+      needsY: false
     },
     {
-      id: "quadrado-diferenca",
-      title: "Quadrado da Diferença",
-      formula: "(a-b)² = a² - 2ab + b²",
-      description: "Expande o quadrado de uma diferença",
-      icon: <Minus className="h-6 w-6" />,
-      color: "from-purple-600 to-purple-700"
-    },
-    {
-      id: "produto-soma-diferenca",
-      title: "Produto da Soma pela Diferença",
-      formula: "(a+b)(a-b) = a² - b²",
-      description: "Produto de soma por diferença",
+      id: "xy-quadrado-mais-constante",
+      title: "xy² + constante",
+      formula: "xy² + c",
+      description: "Calcula xy² mais uma constante",
+      example: "xy² + 8",
       icon: <X className="h-6 w-6" />,
-      color: "from-purple-400 to-purple-500"
+      color: "from-purple-600 to-purple-700",
+      needsY: true
+    },
+    {
+      id: "constante-mais-xy-quadrado",
+      title: "constante + xy²",
+      formula: "c + xy²",
+      description: "Calcula uma constante mais xy²",
+      example: "25 + xy²",
+      icon: <Plus className="h-6 w-6" />,
+      color: "from-purple-400 to-purple-500",
+      needsY: true
+    },
+    {
+      id: "x-quadrado-menos-y",
+      title: "x² - y",
+      formula: "x² - y",
+      description: "Calcula x² menos y",
+      example: "x² - y",
+      icon: <Minus className="h-6 w-6" />,
+      color: "from-purple-700 to-purple-800",
+      needsY: true
     }
   ];
 
   const calculateResult = () => {
-    const a = parseFloat(valueA);
-    const b = parseFloat(valueB);
+    const x = parseFloat(valueX);
+    const y = parseFloat(valueY);
     
-    if (isNaN(a) || isNaN(b)) {
-      setResult("Por favor, insira valores numéricos válidos");
+    if (isNaN(x)) {
+      setResult("Por favor, insira um valor numérico válido para x");
+      return;
+    }
+
+    const selectedProductData = products.find(p => p.id === selectedProduct);
+    if (selectedProductData?.needsY && isNaN(y)) {
+      setResult("Por favor, insira um valor numérico válido para y");
       return;
     }
 
@@ -52,17 +75,24 @@ const Index = () => {
     let numericResult = 0;
 
     switch (selectedProduct) {
-      case "quadrado-soma":
-        numericResult = (a + b) ** 2;
-        calculation = `(${a}+${b})² = ${a}² + 2(${a})(${b}) + ${b}² = ${a**2} + ${2*a*b} + ${b**2} = ${numericResult}`;
+      case "x-quadrado-mais-constante":
+        const constant1 = 5; // Exemplo: x² + 5
+        numericResult = x**2 + constant1;
+        calculation = `x² + ${constant1} = ${x}² + ${constant1} = ${x**2} + ${constant1} = ${numericResult}`;
         break;
-      case "quadrado-diferenca":
-        numericResult = (a - b) ** 2;
-        calculation = `(${a}-${b})² = ${a}² - 2(${a})(${b}) + ${b}² = ${a**2} - ${2*a*b} + ${b**2} = ${numericResult}`;
+      case "xy-quadrado-mais-constante":
+        const constant2 = 8; // Exemplo: xy² + 8
+        numericResult = x * (y**2) + constant2;
+        calculation = `xy² + ${constant2} = ${x} × ${y}² + ${constant2} = ${x} × ${y**2} + ${constant2} = ${x * (y**2)} + ${constant2} = ${numericResult}`;
         break;
-      case "produto-soma-diferenca":
-        numericResult = a**2 - b**2;
-        calculation = `(${a}+${b})(${a}-${b}) = ${a}² - ${b}² = ${a**2} - ${b**2} = ${numericResult}`;
+      case "constante-mais-xy-quadrado":
+        const constant3 = 25; // Exemplo: 25 + xy²
+        numericResult = constant3 + x * (y**2);
+        calculation = `${constant3} + xy² = ${constant3} + ${x} × ${y}² = ${constant3} + ${x} × ${y**2} = ${constant3} + ${x * (y**2)} = ${numericResult}`;
+        break;
+      case "x-quadrado-menos-y":
+        numericResult = x**2 - y;
+        calculation = `x² - y = ${x}² - ${y} = ${x**2} - ${y} = ${numericResult}`;
         break;
     }
     
@@ -70,8 +100,8 @@ const Index = () => {
   };
 
   const resetCalculation = () => {
-    setValueA("");
-    setValueB("");
+    setValueX("");
+    setValueY("");
     setResult("");
   };
 
@@ -79,6 +109,8 @@ const Index = () => {
     setSelectedProduct(null);
     resetCalculation();
   };
+
+  const selectedProductData = products.find(p => p.id === selectedProduct);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-purple-50 to-purple-100">
@@ -88,16 +120,16 @@ const Index = () => {
           <div className="flex items-center justify-center mb-4">
             <Calculator className="h-12 w-12 text-primary mr-4" />
             <h1 className="text-5xl font-bold text-foreground">
-              Produtos Notáveis
+              Calculadora Algébrica
             </h1>
           </div>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Calcule e visualize os principais produtos notáveis da álgebra
+            Calcule expressões algébricas com variáveis x e y
           </p>
         </div>
 
         {/* Product Cards */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
           {products.map((product) => (
             <Card 
               key={product.id}
@@ -110,7 +142,7 @@ const Index = () => {
                   <div className={`p-3 rounded-lg bg-gradient-to-br ${product.color} text-white`}>
                     {product.icon}
                   </div>
-                  <CardTitle className="text-foreground text-xl">
+                  <CardTitle className="text-foreground text-lg">
                     {product.title}
                   </CardTitle>
                 </div>
@@ -119,13 +151,16 @@ const Index = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="relative">
-                <div className="bg-muted p-4 rounded-lg border border-border">
+                <div className="bg-muted p-4 rounded-lg border border-border mb-2">
                   <code className="text-primary text-lg font-mono font-medium">
                     {product.formula}
                   </code>
                 </div>
+                <div className="text-sm text-muted-foreground mb-4">
+                  Exemplo: {product.example}
+                </div>
                 <Button 
-                  className={`w-full mt-4 bg-gradient-to-r ${product.color} hover:opacity-90 text-white font-semibold`}
+                  className={`w-full bg-gradient-to-r ${product.color} hover:opacity-90 text-white font-semibold`}
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelectedProduct(product.id);
@@ -143,7 +178,7 @@ const Index = () => {
           <DialogContent className="bg-card border-border text-foreground max-w-md">
             <DialogHeader>
               <DialogTitle className="text-2xl font-bold text-center text-primary">
-                {products.find(p => p.id === selectedProduct)?.title}
+                {selectedProductData?.title}
               </DialogTitle>
             </DialogHeader>
             
@@ -151,46 +186,48 @@ const Index = () => {
               {/* Formula Display */}
               <div className="bg-muted p-4 rounded-lg border border-border text-center">
                 <code className="text-primary text-lg font-mono font-medium">
-                  {products.find(p => p.id === selectedProduct)?.formula}
+                  {selectedProductData?.example}
                 </code>
               </div>
 
               {/* Input Fields */}
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="valueA" className="text-foreground">
-                    Escolha o valor de a:
+                  <Label htmlFor="valueX" className="text-foreground">
+                    Valor de x:
                   </Label>
                   <Input
-                    id="valueA"
+                    id="valueX"
                     type="number"
-                    value={valueA}
-                    onChange={(e) => setValueA(e.target.value)}
-                    placeholder="Digite o valor de a"
+                    value={valueX}
+                    onChange={(e) => setValueX(e.target.value)}
+                    placeholder="Digite o valor de x"
                     className="bg-background border-border text-foreground mt-2"
                   />
                 </div>
                 
-                <div>
-                  <Label htmlFor="valueB" className="text-foreground">
-                    Escolha o valor de b:
-                  </Label>
-                  <Input
-                    id="valueB"
-                    type="number"
-                    value={valueB}
-                    onChange={(e) => setValueB(e.target.value)}
-                    placeholder="Digite o valor de b"
-                    className="bg-background border-border text-foreground mt-2"
-                  />
-                </div>
+                {selectedProductData?.needsY && (
+                  <div>
+                    <Label htmlFor="valueY" className="text-foreground">
+                      Valor de y:
+                    </Label>
+                    <Input
+                      id="valueY"
+                      type="number"
+                      value={valueY}
+                      onChange={(e) => setValueY(e.target.value)}
+                      placeholder="Digite o valor de y"
+                      className="bg-background border-border text-foreground mt-2"
+                    />
+                  </div>
+                )}
               </div>
 
               {/* Calculate Button */}
               <Button 
                 onClick={calculateResult}
                 className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3"
-                disabled={!valueA || !valueB}
+                disabled={!valueX || (selectedProductData?.needsY && !valueY)}
               >
                 <Calculator className="h-5 w-5 mr-2" />
                 Calcular
